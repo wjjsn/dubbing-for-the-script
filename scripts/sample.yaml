@@ -1,0 +1,23 @@
+title: 测试剧本第一章
+author: 测试者
+script:
+  - character: 旁白
+    text: 夜色笼罩了露格尼卡王都，街道上只剩下微弱的灯光。
+  - character: 爱蜜莉雅
+    emotion: 高兴
+    text: 今天真是个好日子呢。
+  - character: 雷姆
+    emotion: 兴奋
+    prompt: 语气轻快
+    text: 是啊，爱蜜莉雅大人！
+  - character: 碧翠丝
+    text: 哼，真是一群吵闹的家伙。
+  - character: 视频内容
+    text: 屏幕上昴正在奔跑追逐白鲸。
+  - character: 库珥修
+    text: 这孩子真是不要命啊。
+  - character: 加菲尔
+    emotion: 愤怒
+    text: 看不下去了！
+  - character: 佩特拉
+    text: 那个……好厉害的样子。
