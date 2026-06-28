@@ -113,6 +113,11 @@ class TtsClient:
         self.client = OpenAI(api_key=api_key, base_url=base_url)
 
     def synthesize(self, task: TtsTask) -> TaskResult:
+        # 已有产物：跳过 API，直接返回成功
+        if task.output_path and os.path.isfile(task.output_path):
+            print(f"  ⏭️  [{task.index:04d}] {task.character}: 复用 {task.output_path}")
+            return TaskResult(task=task, success=True)
+
         last_error = None
         for attempt in range(MAX_RETRIES + 1):
             try:
