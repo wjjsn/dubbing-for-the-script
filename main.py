@@ -2,7 +2,7 @@ from tts_generator import generate_tts
 
 
 def main():
-    stats = generate_tts("sample.yaml")
+    stats = generate_tts("scripts/2_script.yaml")
     print(stats)
 
 

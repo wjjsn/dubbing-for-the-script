@@ -14,9 +14,8 @@ from openai import OpenAI
 
 # ── 配置 ────────────────────────────────────────────────────
 
-MODEL = "mimo-v2.5-tts-voiceclone"
 SCHEMA_PATH = "schema.jsonc"
-MAX_RETRIES = 50
+MAX_RETRIES = 10
 MAX_TEXT_LEN = 10
 
 # client_id → 独立配置
@@ -35,30 +34,30 @@ CLIENT_CONFIGS: dict[int, dict] = {
     },
 }
 
-# 角色 → 音色文件路径
-VOICE_MAP: dict[str, str] = {
-    "旁白": "asset/aimiliya.wav",
-    "爱蜜莉雅": "asset/aimiliya.wav",
-    "雷姆": "asset/aimiliya.wav",
-    "碧翠丝": "asset/aimiliya.wav",
-    "罗兹瓦尔": "asset/aimiliya.wav",
-    "拉姆": "asset/aimiliya.wav",
-    "奥托": "asset/aimiliya.wav",
-    "弗雷德莉卡": "asset/aimiliya.wav",
-    "加菲尔": "asset/aimiliya.wav",
-    "佩特拉": "asset/aimiliya.wav",
-    "库珥修": "asset/aimiliya.wav",
-    "菲莉丝": "asset/aimiliya.wav",
-    "威尔海姆": "asset/aimiliya.wav",
-    "普莉希拉": "asset/aimiliya.wav",
-    "阿尔": "asset/aimiliya.wav",
-    "菲鲁特": "asset/aimiliya.wav",
-    "莱茵哈鲁特": "asset/aimiliya.wav",
-    "安娜塔西亚": "asset/aimiliya.wav",
-    "由里乌斯": "asset/aimiliya.wav",
-    "里卡多": "asset/aimiliya.wav",
-    "蜜蜜": "asset/aimiliya.wav",
-    "缇碧": "asset/aimiliya.wav",
+# 角色 → {voice_path, model}
+VOICE_MAP: dict[str, dict] = {
+    "旁白":       {"voice_path": "NULL", "model": "mimo-v2.5-tts"},
+    "爱蜜莉雅":   {"voice_path": "asset/爱蜜莉雅.wav", "model": "mimo-v2.5-tts"},
+    "雷姆":       {"voice_path": "asset/雷姆.wav", "model": "mimo-v2.5-tts-voiceclone"},
+    "碧翠丝":     {"voice_path": "asset/碧翠丝.wav", "model": "mimo-v2.5-tts-voiceclone"},
+    "罗兹瓦尔":   {"voice_path": "asset/罗兹瓦尔.wav", "model": "mimo-v2.5-tts-voiceclone"},
+    "拉姆":       {"voice_path": "asset/拉姆.wav", "model": "mimo-v2.5-tts-voiceclone"},
+    "奥托":       {"voice_path": "asset/奥托.wav", "model": "mimo-v2.5-tts-voiceclone"},
+    "弗雷德莉卡": {"voice_path": "NULL", "model": "mimo-v2.5-tts"},
+    "加菲尔":     {"voice_path": "NULL", "model": "mimo-v2.5-tts"},
+    "佩特拉":     {"voice_path": "NULL", "model": "mimo-v2.5-tts"},
+    "库珥修":     {"voice_path": "NULL", "model": "mimo-v2.5-tts"},
+    "菲莉丝":     {"voice_path": "NULL", "model": "mimo-v2.5-tts"},
+    "威尔海姆":   {"voice_path": "NULL", "model": "mimo-v2.5-tts"},
+    "普莉希拉":   {"voice_path": "NULL", "model": "mimo-v2.5-tts"},
+    "阿尔":       {"voice_path": "NULL", "model": "mimo-v2.5-tts"},
+    "菲鲁特":     {"voice_path": "NULL", "model": "mimo-v2.5-tts"},
+    "莱茵哈鲁特": {"voice_path": "NULL", "model": "mimo-v2.5-tts"},
+    "安娜塔西亚": {"voice_path": "NULL", "model": "mimo-v2.5-tts"},
+    "由里乌斯":   {"voice_path": "NULL", "model": "mimo-v2.5-tts"},
+    "里卡多":     {"voice_path": "NULL", "model": "mimo-v2.5-tts"},
+    "蜜蜜":       {"voice_path": "NULL", "model": "mimo-v2.5-tts"},
+    "缇碧":       {"voice_path": "NULL", "model": "mimo-v2.5-tts"},
 }
 
 
@@ -72,6 +71,7 @@ class TtsTask:
     emotion: str = ""
     prompt: str = ""
     voice_path: str = ""
+    model: str = ""
     output_path: str = ""
     retries: int = 0
 
@@ -100,7 +100,7 @@ def _load_jsonc(path: str) -> dict:
 
 def _build_messages(task: TtsTask) -> list[dict]:
     return [
-        {"role": "user", "content": ""},
+        {"role": "user", "content": "请说中文。"},
         {"role": "assistant", "content": task.text},
     ]
 
@@ -116,14 +116,25 @@ class TtsClient:
         last_error = None
         for attempt in range(MAX_RETRIES + 1):
             try:
-                kwargs = {"model": MODEL, "messages": _build_messages(task),"seed": 42,"temperature": 0.1}
+                kwargs = {"model": task.model, "messages": _build_messages(task),"seed": 42,"temperature": 0.1}
+                # print(f"角色`{task.character}`正在使用`{task.model}`模型，声音是：`{task.voice_path}`")
+                print(task,end='\n--------\n')
                 if task.voice_path and os.path.isfile(task.voice_path):
-                    with open(task.voice_path, "rb") as f:
-                        voice_b64 = base64.b64encode(f.read()).decode("utf-8")
-                    kwargs["audio"] = {
-                        "format": "wav",
-                        "voice": f"data:audio/mpeg;base64,{voice_b64}",
-                    }
+                    if task.model == "mimo-v2.5-tts-voiceclone":
+                        with open(task.voice_path, "rb") as f:
+                            voice_b64 = base64.b64encode(f.read()).decode("utf-8")
+                        kwargs["audio"] = {
+                            "format": "wav",
+                            "voice": f"data:audio/mpeg;base64,{voice_b64}",
+                        }
+                    elif task.model == "mimo-v2.5-tts":
+                        # kwargs["audio"] = {
+                        #     "format": "wav",
+                        #     "voice": "白桦",
+                        # }
+                        return TaskResult(task=task, success=False)
+                    else:
+                        return TaskResult(task=task, success=False)
 
                 resp = self.client.chat.completions.create(**kwargs)
                 audio_bytes = base64.b64decode(resp.choices[0].message.audio.data)
@@ -138,7 +149,7 @@ class TtsClient:
                 last_error = str(e)
                 task.retries = attempt + 1
                 if attempt < MAX_RETRIES:
-                    time.sleep(2 ** attempt)
+                    time.sleep(2 * attempt)
 
         return TaskResult(task=task, success=False, error=last_error)
     def close(self):
@@ -153,7 +164,7 @@ def _produce(title: str, script: list[dict]) -> list[TtsTask]:
     for i, item in enumerate(script):
         character = item.get("character", "旁白")
         text = item.get("text", "").strip()
-        if not text or character == "视频内容":
+        if not text :
             continue
 
         safe_title = _sanitize(title, 50)
@@ -165,7 +176,8 @@ def _produce(title: str, script: list[dict]) -> list[TtsTask]:
             text=text,
             emotion=item.get("emotion", ""),
             prompt=item.get("prompt", ""),
-            voice_path=VOICE_MAP.get(character, ""),
+            voice_path=VOICE_MAP.get(character, {}).get("voice_path", ""),
+            model=VOICE_MAP.get(character, {}).get("model"),
             output_path=os.path.join("voice", safe_title, filename),
         ))
     return tasks
