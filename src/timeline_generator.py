@@ -21,6 +21,7 @@ TC_OFFSET = 86400
 ASSET_DIR = "asset"
 VOICE_DIR = "voice"
 OUTPUT_DIR = "timeline"
+SUBTITLE_DIR = "subtitle"
 WIN_BASE = "C:/Users/wjjsn/Desktop/new"
 
 
@@ -484,16 +485,71 @@ def process_yaml(yaml_path):
     return output_path
 
 
+# ── SRT 字幕生成 ────────────────────────────────────────────
+
+
+def _frames_to_srt_time(frames):
+    total_seconds = frames / TIMEBASE
+    hours = int(total_seconds // 3600)
+    minutes = int((total_seconds % 3600) // 60)
+    seconds = int(total_seconds % 60)
+    millis = int((total_seconds % 1) * 1000)
+    return f"{hours:02d}:{minutes:02d}:{seconds:02d},{millis:03d}"
+
+
+def generate_srt(clips):
+    if not clips:
+        return None
+    lines = []
+    for i, clip in enumerate(clips, 1):
+        start = _frames_to_srt_time(clip['start'])
+        end = _frames_to_srt_time(clip['end'])
+        text = clip['text']
+        lines.append(f"{i}")
+        lines.append(f"{start} --> {end}")
+        lines.append(text)
+        lines.append("")
+    return "\n".join(lines)
+
+
+def process_yaml_srt(yaml_path):
+    print(f"处理: {yaml_path}")
+    title, clips = collect_clips(yaml_path)
+    if not clips:
+        print("  [警告] 没有有效的片段，跳过")
+        return None
+
+    srt = generate_srt(clips)
+    if not srt:
+        return None
+
+    os.makedirs(SUBTITLE_DIR, exist_ok=True)
+    basename = os.path.splitext(os.path.basename(yaml_path))[0]
+    output_path = os.path.join(SUBTITLE_DIR, f"{basename}.srt")
+
+    with open(output_path, 'w', encoding='utf-8') as f:
+        f.write(srt)
+
+    print(f"  生成: {output_path}")
+    print(f"  标题: {title}")
+    print(f"  字幕: {len(clips)} 条")
+    return output_path
+
+
 if __name__ == '__main__':
     import sys
 
     if len(sys.argv) < 2:
         print("用法:")
-        print("  单文件: python -m src.timeline_generator scripts/sample.yaml")
-        print("  批量:   python -m src.timeline_generator --all")
+        print("  时间线 单文件: python -m src.timeline_generator scripts/sample.yaml")
+        print("  时间线 批量:   python -m src.timeline_generator --all")
+        print("  字幕 单文件:   python -m src.timeline_generator --srt scripts/sample.yaml")
+        print("  字幕 批量:     python -m src.timeline_generator --all-srt")
         sys.exit(1)
 
-    if sys.argv[1] == '--all':
+    cmd = sys.argv[1]
+
+    if cmd == '--all':
         yaml_files = sorted(glob.glob(os.path.join('scripts', '*.yaml')))
         if not yaml_files:
             print("未找到 scripts/*.yaml 文件")
@@ -502,8 +558,29 @@ if __name__ == '__main__':
         for yf in yaml_files:
             process_yaml(yf)
             print()
+
+    elif cmd == '--all-srt':
+        yaml_files = sorted(glob.glob(os.path.join('scripts', '*.yaml')))
+        if not yaml_files:
+            print("未找到 scripts/*.yaml 文件")
+            sys.exit(1)
+        print(f"找到 {len(yaml_files)} 个 YAML 文件\n")
+        for yf in yaml_files:
+            process_yaml_srt(yf)
+            print()
+
+    elif cmd == '--srt':
+        if len(sys.argv) < 3:
+            print("用法: python -m src.timeline_generator --srt scripts/sample.yaml")
+            sys.exit(1)
+        yaml_path = sys.argv[2]
+        if not os.path.exists(yaml_path):
+            print(f"文件不存在: {yaml_path}")
+            sys.exit(1)
+        process_yaml_srt(yaml_path)
+
     else:
-        yaml_path = sys.argv[1]
+        yaml_path = cmd
         if not os.path.exists(yaml_path):
             print(f"文件不存在: {yaml_path}")
             sys.exit(1)
