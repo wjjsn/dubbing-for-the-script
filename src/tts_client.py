@@ -88,13 +88,24 @@ class tts_client_CosyVoice3:
         if task.output_path and os.path.isfile(task.output_path):
             print(f"  ⏭️  [{task.index:04d}] {task.character}: 复用 {task.output_path}")
             return TaskResult(task=task, success=True)
-
-        url = f"{self.base_url}/inference_cross_lingual"
-        data = {
-            "tts_text": f'You are a helpful assistant.请用稍快一丝的语速朗读。<|endofprompt|>{task.text}',
-        }
+        
+        url = None
+        data = None
         # prompt_wav 必须传，没有专属音色就用默认
         prompt_wav_path = task.voice_path if (task.voice_path and os.path.isfile(task.voice_path)) else self._default_prompt_wav
+        match task.model:
+            case "mimo-v2.5-tts":
+                url = f"{self.base_url}/inference_cross_lingual"
+                data = {
+                    "tts_text": f'You are a helpful assistant.请用稍快一丝的语速朗读。<|endofprompt|>{task.text}',
+                }
+            case "mimo-v2.5-tts-voiceclone":
+                url = f"{self.base_url}/inference_zero_shot"
+                data = {
+                    "tts_text": f'{task.text}',
+                    "prompt_text": f'You are a helpful assistant.<|endofprompt|>{task.character_voice_prompt_text}'
+                }
+
 
         last_error = None
         with open(prompt_wav_path, "rb") as f:
@@ -121,5 +132,5 @@ class tts_client_CosyVoice3:
         os.makedirs(os.path.dirname(task.output_path), exist_ok=True)
         with open(task.output_path, "wb") as f:
             f.write(wav_bytes)
-        print(f"文件已保存在：{task.output_path}")
+        print(f"文件已保存在： {task.output_path}")
         return TaskResult(task=task, success=True)

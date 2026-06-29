@@ -15,6 +15,7 @@ MAX_TEXT_LEN = 10
 
 # client_id → 独立配置
 CLIENT_CONFIGS: dict[int, dict] = {
+    #所有密钥都是失效的，无需担心
     0: {
         "api_key": "sk-cawpv749024o67kun1n8csga03yzugzv4y3pvllpty9pjbph",
         "base_url": "https://api.xiaomimimo.com/v1",
@@ -33,11 +34,11 @@ CLIENT_CONFIGS: dict[int, dict] = {
 VOICE_MAP: dict[str, dict] = {
     "旁白":       {"voice_path": "/home/wjjsn/code/test/src/CosyVoice/asset/zero_shot_prompt.wav", "model": "mimo-v2.5-tts", "prompt_text": "希望你以后能够做的比我还好呦。"},
     "爱蜜莉雅":   {"voice_path": "asset/爱蜜莉雅.wav", "model": "mimo-v2.5-tts", "prompt_text": "希望你以后能够做的比我还好呦。", "prompt_text": "どうしたのスバル君 ホームルームのチャイムはなりましたよ"},
-    "雷姆":       {"voice_path": "asset/雷姆.wav", "model": "mimo-v2.5-tts-voiceclone", "prompt_text": "カララギに到着して、まず宿を借ります 生活の基盤は、家とお仕事があればなんとかなるでしょう 幸い、レムはロズバール様のあからいで教育を受けていますから カララギでもいくらか仕事を見つけるのは良いだと思います スバル君は肉体労働を探してもらうか、レムの身の回りの汗は押してもらうことになるかもしれませんね"},
-    "碧翠丝":     {"voice_path": "asset/碧翠丝.wav", "model": "mimo-v2.5-tts-voiceclone", "prompt_text": "なんて心の底から腹立たしいやつなのかしら お前に見せる笑顔なんで長少で十分なのよ ビティの処庫県新室県を支出かしら"},
-    "罗兹瓦尔":   {"voice_path": "asset/罗兹瓦尔.wav", "model": "mimo-v2.5-tts-voiceclone", "prompt_text": "これはこれは珍しいとりあわせだーね スバルくん それは私から聞いたのかね うん そうか そうか残念だ シラを着ることもできるが 君らもそれなりの根拠を持ってここへ来たんだ 私もそれに敬意を払おうじゃないか"},
-    "拉姆":       {"voice_path": "asset/拉姆.wav", "model": "mimo-v2.5-tts-voiceclone", "prompt_text": "アラバルスの子のことラムたちの超芸術性に誘われて現れたようね レムたちが屋敷の外で雪と騙むれているのに ラムだけベッドでダミンを塗さぼっているとでも"},
-    "奥托":       {"voice_path": "asset/奥托.wav", "model": "mimo-v2.5-tts-voiceclone", "prompt_text": "何か言いましたかあなつきさん どうしたんですか急に出れるじゃないですか これからメイザーするよまでもう夜ですし危険では僕たちは今夜ここで夜へするつもり なのでよければご視聴されませんか"},
+    "雷姆":       {"voice_path": "asset/雷姆.wav", "model": "mimo-v2.5-tts", "prompt_text": "カララギに到着して、まず宿を借ります 生活の基盤は、家とお仕事があればなんとかなるでしょう 幸い、レムはロズバール様のあからいで教育を受けていますから カララギでもいくらか仕事を見つけるのは良いだと思います スバル君は肉体労働を探してもらうか、レムの身の回りの汗は押してもらうことになるかもしれませんね"},
+    "碧翠丝":     {"voice_path": "asset/碧翠丝.wav", "model": "mimo-v2.5-tts", "prompt_text": "なんて心の底から腹立たしいやつなのかしら お前に見せる笑顔なんで長少で十分なのよ ビティの処庫県新室県を支出かしら"},
+    "罗兹瓦尔":   {"voice_path": "asset/罗兹瓦尔.wav", "model": "mimo-v2.5-tts", "prompt_text": "これはこれは珍しいとりあわせだーね スバルくん それは私から聞いたのかね うん そうか そうか残念だ シラを着ることもできるが 君らもそれなりの根拠を持ってここへ来たんだ 私もそれに敬意を払おうじゃないか"},
+    "拉姆":       {"voice_path": "asset/拉姆.wav", "model": "mimo-v2.5-tts", "prompt_text": "アラバルスの子のことラムたちの超芸術性に誘われて現れたようね レムたちが屋敷の外で雪と騙むれているのに ラムだけベッドでダミンを塗さぼっているとでも"},
+    "奥托":       {"voice_path": "asset/奥托.wav", "model": "mimo-v2.5-tts", "prompt_text": "何か言いましたかあなつきさん どうしたんですか急に出れるじゃないですか これからメイザーするよまでもう夜ですし危険では僕たちは今夜ここで夜へするつもり なのでよければご視聴されませんか"},
     # "爱蜜莉雅":   {"voice_path": "/home/wjjsn/code/test/src/CosyVoice/asset/zero_shot_prompt.wav", "model": "mimo-v2.5-tts", "prompt_text": "希望你以后能够做的比我还好呦。"},
     # "雷姆":       {"voice_path": "/home/wjjsn/code/test/src/CosyVoice/asset/zero_shot_prompt.wav", "model": "mimo-v2.5-tts-voiceclone"},
     # "碧翠丝":     {"voice_path": "/home/wjjsn/code/test/src/CosyVoice/asset/zero_shot_prompt.wav", "model": "mimo-v2.5-tts-voiceclone"},
@@ -59,6 +60,7 @@ VOICE_MAP: dict[str, dict] = {
     "里卡多":     {"voice_path": "/home/wjjsn/code/test/src/CosyVoice/asset/zero_shot_prompt.wav", "model": "mimo-v2.5-tts", "prompt_text": "希望你以后能够做的比我还好呦。"},
     "蜜蜜":       {"voice_path": "/home/wjjsn/code/test/src/CosyVoice/asset/zero_shot_prompt.wav", "model": "mimo-v2.5-tts", "prompt_text": "希望你以后能够做的比我还好呦。"},
     "缇碧":       {"voice_path": "/home/wjjsn/code/test/src/CosyVoice/asset/zero_shot_prompt.wav", "model": "mimo-v2.5-tts", "prompt_text": "希望你以后能够做的比我还好呦。"},
+    "凑粉毛":       {"voice_path": "asset/凑粉毛.wav", "model": "mimo-v2.5-tts-voiceclone", "prompt_text": "不过新的插件堂堂复活！四个小版本不见，插件带来了若干新功能，包括但不限于：一、对话分岔：你现在可以和ChatGPT一样在任何对话节点展开一个新的对话"},
 }
 
 
