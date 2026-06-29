@@ -1,9 +1,12 @@
-from tts_generator import generate_tts
+from src.tts_generator import generate_tts
 
 
 def main():
-    stats = generate_tts("scripts/2_script.yaml")
-    print(stats)
+    for num in range(1,10):
+        stats = generate_tts(f"scripts/{num}_script.yaml","CosyVoice3")
+        print(stats)
+    # stats = generate_tts(f"scripts/sample.yaml","CosyVoice3")
+    # print(stats)
 
 
 if __name__ == "__main__":
