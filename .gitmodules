@@ -1,0 +1,3 @@
+[submodule "src/CosyVoice"]
+	path = src/CosyVoice
+	url = https://github.com/wjjsn/CosyVoice.git
