@@ -1,23 +1,25 @@
 title: 测试剧本第一章
 author: 测试者
 script:
-  - character: 旁白
-    text: 夜色笼罩了露格尼卡王都，街道上只剩下微弱的灯光。
   - character: 爱蜜莉雅
     emotion: 高兴
-    text: 今天真是个好日子呢。
+    text: 今天真是个好日子呢。、
+  - character: "爱蜜莉雅"
+    emotion: "悲伤"
+    prompt: "惊慌失措，声音颤抖"
+    text: "是——是的，菜月昴！我在！我在这里！请你……请继续慢慢呼吸。"
   - character: 雷姆
     emotion: 兴奋
     prompt: 语气轻快
     text: 是啊，爱蜜莉雅大人！
   - character: 碧翠丝
-    text: 哼，真是一群吵闹的家伙。
-  - character: 视频内容
-    text: 屏幕上昴正在奔跑追逐白鲸。
-  - character: 库珥修
-    text: 这孩子真是不要命啊。
-  - character: 加菲尔
-    emotion: 愤怒
-    text: 看不下去了！
-  - character: 佩特拉
-    text: 那个……好厉害的样子。
+    text: 哼，真是一群吵闹的家伙，事实上。
+  - character: "拉姆"
+    text: "你说什么，姐姐？"
+  - character: "雷姆"
+    emotion: "悲伤"
+    text: "菜月昴没有告诉任何人有关魔兽的事，是因为他没有任何人可以依靠。碧翠丝大人表现得好像他的存在令她厌烦。据我们所知，她是唯一一个愿意在某种程度上帮他的。"
+  - character: "罗兹瓦尔"
+    text: "嗯……这加载得是不是有点太久了？"
+  - character: "奥托"
+    text: "你也太幼稚了，加菲尔。"

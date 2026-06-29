@@ -1,0 +1,33 @@
+title: "软件介绍"
+author: "wjjsn"
+script:
+  - character: 凑粉毛
+    text: 这个是我写的一个脚本，目前代码已在github开源。
+  - character: 凑粉毛
+    text: 它可以把剧本批量转换成剪辑软件能识别的XML格式。
+  - character: 凑粉毛
+    text: 同时它还能批量生成剧本对应的音频文件。
+  - character: 凑粉毛
+    text: 等所有素材生成完毕后，就可以直接导入到剪辑软件里开始编辑了。
+  - character: 凑粉毛
+    text: 等打开剪辑软件之后，你只需要做两件事。
+  - character: 凑粉毛
+    text: 一是调整画面中人物贴图的位置。二是修正一下每个片段的时间戳。
+  - character: 凑粉毛
+    text: 这样很快就能剪完一集内容。
+  - character: 凑粉毛
+    text: 工作效率提高了，也就能更快吃上饭了。
+  - character: 凑粉毛
+    text: 另外，每个角色的音色都是可以自由自定义的。
+  - character: 凑粉毛
+    text: 这张图片是我用来测试的素材，目前它还是绿幕背景。
+  - character: 凑粉毛
+    text: 等正式使用时，只要把图片替换成对应的人物贴图就好了。
+  - character: 凑粉毛
+    text: 替换之后，最终渲染出来的画面就是正常的了。
+  - character: 凑粉毛
+    text: 你还可以在列表里预览所有已经生成的音频文件。
+  - character: 凑粉毛
+    text: 如果有哪一条听起来不满意，随时都可以单独重新生成。
+  - character: 凑粉毛
+    text: 是的，你没猜错，你现在看到的视频就是用这个方法做出来的！
